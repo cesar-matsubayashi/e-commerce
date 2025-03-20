@@ -30,4 +30,10 @@ describe("Product unit tests", () => {
     product.changePrice(150);
     expect(product.price).toBe(150);
   });
+
+  it("should throw error when id and name is empty", () => {
+    expect(() => {
+      const product = new Product("", "", 100);
+    }).toThrowError("product: Id is required,product: Name is required");
+  });
 });
