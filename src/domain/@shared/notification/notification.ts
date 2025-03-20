@@ -7,7 +7,13 @@ export default class Notification {
   private errors: NotificationErrorProps[] = [];
 
   addError(error: NotificationErrorProps) {
-    this.errors.push(error);
+    if (
+      !this.errors.some(
+        (existingError) => existingError.message === error.message
+      )
+    ) {
+      this.errors.push(error);
+    }
   }
 
   hasErrors() {
