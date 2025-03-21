@@ -109,4 +109,22 @@ describe("Unit test for customer update use case", () => {
       "City is required"
     );
   });
+
+  it("should throw an error when zip and city is missing", async () => {
+    const customer = createCustomer();
+    const customerRepository = MockRepository();
+    customerRepository.find.mockReturnValue(Promise.resolve(customer));
+    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+
+    input.id = customer.id;
+
+    const testInput = {
+      ...input,
+      address: { ...input.address, zip: "", city: "" },
+    };
+
+    await expect(customerUpdateUseCase.execute(testInput)).rejects.toThrow(
+      "customer: Zip is required,customer: City is required"
+    );
+  });
 });

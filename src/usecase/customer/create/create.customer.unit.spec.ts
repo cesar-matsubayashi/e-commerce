@@ -1,3 +1,4 @@
+import { number } from "yup";
 import CreateCustomerUseCase from "./create.customer.usecase";
 
 const input = {
@@ -20,7 +21,6 @@ const MockRepository = () => {
 };
 
 describe("Unit test create customer use case", () => {
-
   it("should create a customer", async () => {
     const customerRepository = MockRepository();
     const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
@@ -36,30 +36,59 @@ describe("Unit test create customer use case", () => {
         zip: input.address.zip,
         city: input.address.city,
       },
-    })
+    });
   });
 
   it("should throw an error when name is missing", async () => {
     const customerRepository = MockRepository();
     const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
 
-    input.name = "";
+    const testInput = { ...input, name: "" };
 
-    await expect(customerCreateUseCase.execute(input)).rejects.toThrow(
+    await expect(customerCreateUseCase.execute(testInput)).rejects.toThrow(
       "Name is required"
     );
-
   });
 
   it("should throw an error when street is missing", async () => {
     const customerRepository = MockRepository();
     const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
 
-    input.address.street = "";
+    const testInput = {
+      ...input,
+      address: { ...input.address, street: "" },
+    };
 
-    await expect(customerCreateUseCase.execute(input)).rejects.toThrow(
+    await expect(customerCreateUseCase.execute(testInput)).rejects.toThrow(
       "Street is required"
     );
+  });
 
+  it("should throw an error when number is missing", async () => {
+    const customerRepository = MockRepository();
+    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+
+    const testInput = {
+      ...input,
+      address: { ...input.address, zip: "" },
+    };
+
+    await expect(customerCreateUseCase.execute(testInput)).rejects.toThrow(
+      "Zip is required"
+    );
+  });
+
+  it("should throw an error when street and zip is missing", async () => {
+    const customerRepository = MockRepository();
+    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+
+    const testInput = {
+      ...input,
+      address: { ...input.address, street: "", zip: "" },
+    };
+
+    await expect(customerCreateUseCase.execute(testInput)).rejects.toThrow(
+      "customer: Street is required,customer: Zip is required"
+    );
   });
 });
