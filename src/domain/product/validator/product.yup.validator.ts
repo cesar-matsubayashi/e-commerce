@@ -1,11 +1,12 @@
 import ValidatorInterface from "../../@shared/validator/validator.interface";
-import Product from "../entity/product";
 import * as yup from "yup";
+import ProductInterface from "../entity/product.interface";
+import Entity from "../../@shared/entity/entity.abstract";
 
 export default class ProductYupValidator
-  implements ValidatorInterface<Product>
+  implements ValidatorInterface<ProductInterface>
 {
-  validate(entity: Product): void {
+  validate(entity: ProductInterface): void {
     try {
       yup
         .object()
@@ -26,8 +27,9 @@ export default class ProductYupValidator
         );
     } catch (errors) {
       const e = errors as yup.ValidationError;
+      const product = entity as unknown as Entity;
       e.errors.forEach((error) => {
-        entity.notification.addError({
+        product.notification.addError({
           context: "product",
           message: error,
         });
