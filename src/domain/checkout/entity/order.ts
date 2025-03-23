@@ -25,6 +25,17 @@ export default class Order {
     return this._items;
   }
 
+  changeCustomerId(customerId: string) {
+    this._customerId = customerId;
+  }
+
+  changeItems(orderItems: OrderItem[]) {
+    orderItems.forEach((orderItem) => {
+      var item = this._items.find((item) => item.id === orderItem.id);
+      item = orderItem;
+    });
+  }
+
   validate(): boolean {
     if (this._id.length === 0) {
       throw new Error("Id is required");
