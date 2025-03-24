@@ -40,4 +40,50 @@ describe("Order unit tests", () => {
       const order = new Order("o1", "c1", [item]);
     }).toThrowError("Quantity must be greater than 0");
   });
+
+  it("should throw error if item id is missing", () => {
+    expect(() => {
+      const item = new OrderItem("", "Item 1", 100, "p1", 10);
+      const order = new Order("o1", "c1", [item]);
+    }).toThrowError("Item id is required");
+  });
+
+  it("should throw error if item name is missing", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "", 100, "p1", 10);
+      const order = new Order("o1", "c1", [item]);
+    }).toThrowError("Item name is required");
+  });
+
+  it("should throw error if item productId is missing", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "Item 1", 100, "", 10);
+      const order = new Order("o1", "c1", [item]);
+    }).toThrowError("Item productId is required");
+  });
+
+  it("should throw error if item price is less or equal 0", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "Item 1", 0, "p1", 10);
+      const order = new Order("o1", "c1", [item]);
+    }).toThrowError("Item price must be greater than zero");
+  });
+
+  it("should throw error if item name and productId is missing", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "", 100, "", 10);
+      const order = new Order("o1", "c1", [item]);
+    }).toThrowError(
+      "order: Item name is required,order: Item productId is required"
+    );
+  });
+
+  it("should throw error if customerId and item productId is missing", () => {
+    expect(() => {
+      const item = new OrderItem("i1", "Item 1", 100, "", 10);
+      const order = new Order("o1", "", [item]);
+    }).toThrowError(
+      "order: CustomerId is required,order: Item productId is required"
+    );
+  });
 });
