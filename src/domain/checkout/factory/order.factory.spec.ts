@@ -1,26 +1,18 @@
-import { v4 as uuid } from "uuid";
 import OrderFactory from "./order.factory";
+import OrderItem from "../entity/order_item";
 
 describe("Order factory unit test", () => {
   it("should create an order", () => {
-    const orderProps = {
-      id: uuid(),
-      customerId: uuid(),
-      items: [
-        {
-          id: uuid(),
-          name: "Product 1",
-          productId: uuid(),
-          quantity: 1,
-          price: 100,
-        },
-      ],
-    };
+    const item = new OrderItem("i123", "Product 1", 100, "p123", 1);
 
-    const order = OrderFactory.create(orderProps);
+    const order = OrderFactory.create("c123", [item]);
 
-    expect(order.id).toEqual(orderProps.id);
-    expect(order.customerId).toEqual(orderProps.customerId);
+    expect(order.customerId).toBe("c123");
     expect(order.items.length).toBe(1);
+    expect(order.items[0].id).toBe("i123");
+    expect(order.items[0].name).toBe("Product 1");
+    expect(order.items[0].price).toBe(100);
+    expect(order.items[0].productId).toBe("p123");
+    expect(order.items[0].quantity).toBe(1);
   });
 });
