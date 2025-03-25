@@ -20,11 +20,11 @@ export default class OrderYupValidator implements ValidatorInterface<Order> {
                 quantity: yup
                   .number()
                   .required("Item quantity is required")
-                  .min(1, "Quantity must be greater than 0"),
+                  .min(1, "Item quantity must be greater than 0"),
                 price: yup
                   .number()
                   .required("Item price is required")
-                  .min(0.01, "Item price must be greater than zero"),
+                  .min(0.01, "Item price must be greater than 0"),
               })
             )
             .min(1, "Items are required"),
