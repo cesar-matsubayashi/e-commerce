@@ -11,4 +11,5 @@ export interface OutputFindCustomerDto {
     number: number;
     zip: string;
   };
+  rewardPoints: number;
 }

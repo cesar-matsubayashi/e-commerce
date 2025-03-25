@@ -36,10 +36,11 @@ describe("Unit test for customer update use case", () => {
     const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
 
     input.id = customer.id;
+    const testInput = { ...input, rewardPoints: "" };
 
     const output = await customerUpdateUseCase.execute(input);
 
-    expect(output).toEqual(input);
+    expect(output).toEqual(testInput);
   });
 
   it("should throw an error when name is missing", async () => {

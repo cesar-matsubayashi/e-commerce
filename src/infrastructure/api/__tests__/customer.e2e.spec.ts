@@ -220,8 +220,10 @@ describe("E2E test for customer", () => {
       .put(`/customer/${response.body.id}`)
       .send(input);
 
+    const testInput = { ...input, rewardPoints: 0 };
+
     expect(output.status).toBe(200);
-    expect(output.body).toEqual(input);
+    expect(output.body).toEqual(testInput);
   });
 
   it("should update a customer xml", async () => {

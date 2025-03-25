@@ -57,6 +57,7 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
       customerModel.city
     );
     customer.changeAddress(address);
+    customer.addRewardPoints(customerModel.rewardPoints);
     return customer;
   }
 

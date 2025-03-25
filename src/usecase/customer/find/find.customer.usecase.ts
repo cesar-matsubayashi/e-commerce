@@ -1,6 +1,9 @@
 import Customer from "../../../domain/customer/entity/customer";
 import CustomerRepositoryInterface from "../../../domain/customer/repository/customer-repository.interface";
-import { InputFindCustomerDto, OutputFindCustomerDto } from "./find.customer.dto";
+import {
+  InputFindCustomerDto,
+  OutputFindCustomerDto,
+} from "./find.customer.dto";
 
 export default class FindCustomerUseCase {
   private customerRepository: CustomerRepositoryInterface;
@@ -21,6 +24,7 @@ export default class FindCustomerUseCase {
         number: customer.Address.number,
         zip: customer.Address.zip,
       },
+      rewardPoints: customer.rewardPoints,
     };
   }
 }

@@ -14,7 +14,6 @@ export default class UpdateCustomerUseCase {
   async execute(
     input: InputUpdateCustomerDto
   ): Promise<OutputUpdateCustomerDto> {
-    
     const customer = await this.CustomerRepository.find(input.id);
 
     customer.changeName(input.name);
@@ -26,6 +25,7 @@ export default class UpdateCustomerUseCase {
         input.address.city
       )
     );
+
     await this.CustomerRepository.update(customer);
 
     return {
@@ -37,6 +37,7 @@ export default class UpdateCustomerUseCase {
         zip: customer.Address.zip,
         city: customer.Address.city,
       },
+      rewardPoints: customer.rewardPoints,
     };
   }
 }

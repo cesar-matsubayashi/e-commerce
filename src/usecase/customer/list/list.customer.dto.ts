@@ -9,6 +9,7 @@ type Customer = {
     zip: string;
     city: string;
   };
+  rewardPoints: number;
 };
 
 export interface OutputListCustomerDto {

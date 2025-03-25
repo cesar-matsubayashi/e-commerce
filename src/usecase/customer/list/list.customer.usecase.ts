@@ -29,6 +29,7 @@ class OutputMapper {
           zip: customer.Address.zip,
           city: customer.Address.city,
         },
+        rewardPoints: customer.rewardPoints,
       })),
     };
   }

@@ -36,6 +36,7 @@ describe("Unit test create customer use case", () => {
         zip: input.address.zip,
         city: input.address.city,
       },
+      rewardPoints: 0,
     });
   });
 

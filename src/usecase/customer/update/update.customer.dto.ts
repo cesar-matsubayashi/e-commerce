@@ -3,8 +3,8 @@ export interface InputUpdateCustomerDto {
   name: string;
   address: {
     street: string;
-    number: number; 
-    zip: string; 
+    number: number;
+    zip: string;
     city: string;
   };
 }
@@ -14,8 +14,9 @@ export interface OutputUpdateCustomerDto {
   name: string;
   address: {
     street: string;
-    number: number; 
-    zip: string; 
+    number: number;
+    zip: string;
     city: string;
   };
+  rewardPoints: number;
 }

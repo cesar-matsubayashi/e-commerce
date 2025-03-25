@@ -6,6 +6,7 @@ import FindCustomerUseCase from "./find.customer.usecase";
 const customer = new Customer("123", "John");
 const address = new Address("Street", 123, "Zip", "City");
 customer.changeAddress(address);
+customer.addRewardPoints(20);
 
 const MockRepository = () => {
   return {
@@ -17,42 +18,41 @@ const MockRepository = () => {
 };
 
 describe("Unit Test find customer use case", () => {
+  it("should find a customer", async () => {
+    const customerRepository = MockRepository();
+    const usecase = new FindCustomerUseCase(customerRepository);
 
-    it("should find a customer", async () => {
+    const input = { id: "123" };
 
-      const customerRepository = MockRepository();
-      const usecase = new FindCustomerUseCase(customerRepository);
+    const output = {
+      id: "123",
+      name: "John",
+      address: {
+        street: "Street",
+        city: "City",
+        number: 123,
+        zip: "Zip",
+      },
+      rewardPoints: 20,
+    };
 
-      const input = { id: "123" };
+    const result = await usecase.execute(input);
 
-      const output = {
-        id: "123",
-        name: "John",
-        address: {
-          street: "Street",
-          city: "City",
-          number: 123,
-          zip: "Zip"
-        }
-      };
+    expect(result).toEqual(output);
+  });
 
-      const result = await usecase.execute(input);
+  it("should not find a customer", async () => {
+    const customerRepository = MockRepository();
+    customerRepository.find.mockImplementation(() => {
+      throw new Error("Customer not found");
+    });
 
-      expect(result).toEqual(output);
-    })
+    const usecase = new FindCustomerUseCase(customerRepository);
 
-    it("should not find a customer", async () => {
-      const customerRepository = MockRepository();
-      customerRepository.find.mockImplementation(() => {
-        throw new Error("Customer not found");
-      });
+    const input = { id: "123" };
 
-      const usecase = new FindCustomerUseCase(customerRepository);
-
-      const input = { id: "123" };
-
-      expect(() => {
-        return usecase.execute(input);
-      }).rejects.toThrow("Customer not found");
-    })
+    expect(() => {
+      return usecase.execute(input);
+    }).rejects.toThrow("Customer not found");
+  });
 });

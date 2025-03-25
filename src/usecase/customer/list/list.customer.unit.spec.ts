@@ -6,6 +6,7 @@ const customer1 = CustomerFactory.createWithAddress(
   "John Doe",
   new Address("Street 1", 1, "12345", "City")
 );
+customer1.addRewardPoints(20);
 
 const customer2 = CustomerFactory.createWithAddress(
   "Jane Doe",
@@ -37,6 +38,7 @@ describe("Unit test for listing customer use case", () => {
       zip: customer1.Address.zip,
       city: customer1.Address.city,
     });
+    expect(output.customers[0].rewardPoints).toBe(20);
 
     expect(output.customers[1].id).toBe(customer2.id);
     expect(output.customers[1].name).toBe(customer2.name);
@@ -46,5 +48,6 @@ describe("Unit test for listing customer use case", () => {
       zip: customer2.Address.zip,
       city: customer2.Address.city,
     });
+    expect(output.customers[1].rewardPoints).toBe(0);
   });
 });

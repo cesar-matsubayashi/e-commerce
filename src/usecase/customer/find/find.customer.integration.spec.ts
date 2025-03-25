@@ -6,50 +6,52 @@ import Address from "../../../domain/customer/value-object/address";
 import FindCustomerUseCase from "./find.customer.usecase";
 
 describe("Test find customer use case", () => {
-
   let sequelize: Sequelize;
-  
-    beforeEach(async () => {
-      sequelize = new Sequelize({
-        dialect: "sqlite",
-        storage: ":memory:",
-        logging: false,
-        sync: { force: true },
-      });
-  
-      await sequelize.addModels([CustomerModel]);
-      await sequelize.sync();
-    });
-  
-    afterEach(async () => {
-      await sequelize.close();
+
+  beforeEach(async () => {
+    sequelize = new Sequelize({
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+      sync: { force: true },
     });
 
-    it("should find a customer", async () => {
+    await sequelize.addModels([CustomerModel]);
+    await sequelize.sync();
+  });
 
-      const customerRepository = new CustomerRepository();
-      const usecase = new FindCustomerUseCase(customerRepository);
+  afterEach(async () => {
+    await sequelize.close();
+  });
 
-      const customer = new Customer("123", "John");
-      const address = new Address("Street", 123, "Zip", "City");
-      customer.changeAddress(address);
-      await customerRepository.create(customer);
+  it("should find a customer", async () => {
+    const customerRepository = new CustomerRepository();
+    const usecase = new FindCustomerUseCase(customerRepository);
 
-      const input = { id: "123" };
+    const customer = new Customer("123", "John");
+    const address = new Address("Street", 123, "Zip", "City");
+    customer.changeAddress(address);
+    customer.addRewardPoints(100);
 
-      const output = {
-        id: "123",
-        name: "John",
-        address: {
-          street: "Street",
-          city: "City",
-          number: 123,
-          zip: "Zip"
-        }
-      };
+    await customerRepository.create(customer);
 
-      const result = await usecase.execute(input);
+    const input = { id: "123" };
 
-      expect(result).toEqual(output);
-    })
+    const output = {
+      id: "123",
+      name: "John",
+      address: {
+        street: "Street",
+        city: "City",
+        number: 123,
+        zip: "Zip",
+      },
+      rewardPoints: 100,
+    };
+
+    const result = await usecase.execute(input);
+
+    expect(result).toEqual(output);
+    expect(result).toEqual(output);
+  });
 });
