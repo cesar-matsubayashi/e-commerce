@@ -38,7 +38,7 @@ describe("Order unit tests", () => {
     expect(() => {
       const item = new OrderItem("i1", "Item 1", 100, "p1", 0);
       const order = new Order("o1", "c1", [item]);
-    }).toThrowError("Quantity must be greater than 0");
+    }).toThrowError("Item quantity must be greater than 0");
   });
 
   it("should throw error if item id is missing", () => {
@@ -66,7 +66,7 @@ describe("Order unit tests", () => {
     expect(() => {
       const item = new OrderItem("i1", "Item 1", 0, "p1", 10);
       const order = new Order("o1", "c1", [item]);
-    }).toThrowError("Item price must be greater than zero");
+    }).toThrowError("Item price must be greater than 0");
   });
 
   it("should throw error if item name and productId is missing", () => {
