@@ -34,11 +34,20 @@ export default class Order extends Entity {
   }
 
   changeItems(orderItems: OrderItem[]) {
-    orderItems.forEach((orderItem) => {
-      var item = this._items.find((item) => item.id === orderItem.id);
-      item = orderItem;
-    });
+    this._items = this._items.map(
+      (item) => orderItems.find((orderItem) => orderItem.id === item.id) || item
+    );
   }
+
+  // changeItems(orderItems: OrderItem[]) {
+  //   console.log(orderItems);
+  //   orderItems.forEach((orderItem) => {
+  //     var item = this._items.find((item) => item.id === orderItem.id);
+  //     console.log(item);
+  //     item = orderItem;
+  //     console.log(item);
+  //   });
+  // }
 
   validate() {
     OrderValidatorFactory.create().validate(this);
