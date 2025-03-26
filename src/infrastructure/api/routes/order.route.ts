@@ -70,7 +70,7 @@ orderRoute.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-orderRoute.post("/:id", async (req: Request, res: Response) => {
+orderRoute.put("/:id", async (req: Request, res: Response) => {
   const usecase = new UpdateOrderUseCase(new OrderRepository());
 
   try {

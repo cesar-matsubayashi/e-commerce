@@ -3,6 +3,7 @@ import { app, sequelize } from "../express";
 import request from "supertest";
 
 let customer: any;
+let customer2: any;
 let productA: any;
 let productB: any;
 
@@ -19,6 +20,18 @@ describe("E2E test for order", () => {
           city: "City",
           number: 123,
           zip: "12345",
+        },
+      });
+
+    customer2 = await request(app)
+      .post("/customer")
+      .send({
+        name: "Jane",
+        address: {
+          street: "Street 1",
+          city: "City 1",
+          number: 1232,
+          zip: "123456",
         },
       });
 
@@ -191,19 +204,6 @@ describe("E2E test for order", () => {
   });
 
   it("should list all orders", async () => {
-    const customer2 = await request(app)
-      .post("/customer")
-      .send({
-        name: "Jane",
-        address: {
-          street: "Street 1",
-          city: "City 1",
-          number: 1232,
-          zip: "123456",
-        },
-      });
-    expect(customer2.status).toBe(200);
-
     const response = await request(app)
       .post("/order")
       .send({
@@ -270,19 +270,6 @@ describe("E2E test for order", () => {
   });
 
   it("should list all orders xml", async () => {
-    const customer2 = await request(app)
-      .post("/customer")
-      .send({
-        name: "Jane",
-        address: {
-          street: "Street 1",
-          city: "City 1",
-          number: 1232,
-          zip: "123456",
-        },
-      });
-    expect(customer2.status).toBe(200);
-
     const response = await request(app)
       .post("/order")
       .send({
@@ -356,5 +343,95 @@ describe("E2E test for order", () => {
     expect(order.text).toContain(`</items>`);
     expect(order.text).toContain(`</order>`);
     expect(order.text).toContain(`</orders>`);
+  });
+
+  it("should update an order", async () => {
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+        ],
+      });
+
+    const input = {
+      id: response.body.id,
+      customerId: customer2.body.id,
+      items: [
+        {
+          id: response.body.items[0].id,
+          name: productB.body.name,
+          productId: productB.body.id,
+          quantity: 1,
+          price: productB.body.price,
+        },
+      ],
+    };
+
+    const output = await request(app)
+      .put(`/order/${response.body.id}`)
+      .send(input);
+
+    expect(output.status).toBe(200);
+    expect(output.body).toEqual(input);
+  });
+
+  it("should update an order xml", async () => {
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+        ],
+      });
+
+    const input = {
+      id: response.body.id,
+      customerId: customer2.body.id,
+      items: [
+        {
+          id: response.body.items[0].id,
+          name: productB.body.name,
+          productId: productB.body.id,
+          quantity: 1,
+          price: productB.body.price,
+        },
+      ],
+    };
+
+    const output = await request(app)
+      .put(`/order/${response.body.id}`)
+      .set("Accept", "application/xml")
+      .send(input);
+
+    expect(output.status).toBe(200);
+    expect(output.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+    expect(output.text).toContain(`<order>`);
+    expect(output.text).toContain(
+      `<customerId>${customer2.body.id}</customerId>`
+    );
+    expect(output.text).toContain(`<items>`);
+    expect(output.text).toContain(`<item>`);
+    expect(output.text).toContain(`<name>${productB.body.name}</name>`);
+    expect(output.text).toContain(`<productId>${productB.body.id}</productId>`);
+    expect(output.text).toContain(`<quantity>1</quantity>`);
+    expect(output.text).toContain(`<price>${productB.body.price}</price>`);
+    expect(output.text).toContain(`</item>`);
+    expect(output.text).toContain(`</items>`);
+    expect(output.text).toContain(`</order>`);
   });
 });
