@@ -39,16 +39,6 @@ export default class Order extends Entity {
     );
   }
 
-  // changeItems(orderItems: OrderItem[]) {
-  //   console.log(orderItems);
-  //   orderItems.forEach((orderItem) => {
-  //     var item = this._items.find((item) => item.id === orderItem.id);
-  //     console.log(item);
-  //     item = orderItem;
-  //     console.log(item);
-  //   });
-  // }
-
   validate() {
     OrderValidatorFactory.create().validate(this);
   }
