@@ -100,4 +100,261 @@ describe("E2E test for order", () => {
 
     expect(response.status).toBe(500);
   });
+
+  it("should find an order", async () => {
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+          {
+            id: uuid(),
+            name: productB.body.name,
+            productId: productB.body.id,
+            quantity: 1,
+            price: productB.body.price,
+          },
+        ],
+      });
+    expect(response.status).toBe(200);
+
+    const order = await request(app).get(`/order/${response.body.id}`).send();
+
+    expect(order.status).toBe(200);
+    expect(order.body.customerId).toBe(customer.body.id);
+    expect(order.body.items.length).toBe(2);
+    expect(order.body.items[0].name).toBe(productA.body.name);
+    expect(order.body.items[0].productId).toBe(productA.body.id);
+    expect(order.body.items[0].price).toBe(productA.body.price);
+    expect(order.body.items[0].quantity).toBe(2);
+    expect(order.body.items[1].name).toBe(productB.body.name);
+    expect(order.body.items[1].productId).toBe(productB.body.id);
+    expect(order.body.items[1].price).toBe(productB.body.price);
+    expect(order.body.items[1].quantity).toBe(1);
+  });
+
+  it("should find an order xml", async () => {
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+          {
+            id: uuid(),
+            name: productB.body.name,
+            productId: productB.body.id,
+            quantity: 1,
+            price: productB.body.price,
+          },
+        ],
+      });
+    expect(response.status).toBe(200);
+
+    const order = await request(app)
+      .get(`/order/${response.body.id}`)
+      .set("Accept", "application/xml")
+      .send();
+
+    expect(order.status).toBe(200);
+    expect(order.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+    expect(order.text).toContain(`<order>`);
+    expect(order.text).toContain(
+      `<customerId>${customer.body.id}</customerId>`
+    );
+    expect(order.text).toContain(`<items>`);
+    expect(order.text).toContain(`<item>`);
+    expect(order.text).toContain(`<name>${productA.body.name}</name>`);
+    expect(order.text).toContain(`<productId>${productA.body.id}</productId>`);
+    expect(order.text).toContain(`<quantity>2</quantity>`);
+    expect(order.text).toContain(`<price>${productA.body.price}</price>`);
+    expect(order.text).toContain(`<name>${productB.body.name}</name>`);
+    expect(order.text).toContain(`<productId>${productB.body.id}</productId>`);
+    expect(order.text).toContain(`<quantity>1</quantity>`);
+    expect(order.text).toContain(`<price>${productB.body.price}</price>`);
+    expect(order.text).toContain(`</item>`);
+    expect(order.text).toContain(`</items>`);
+    expect(order.text).toContain(`</order>`);
+  });
+
+  it("should list all orders", async () => {
+    const customer2 = await request(app)
+      .post("/customer")
+      .send({
+        name: "Jane",
+        address: {
+          street: "Street 1",
+          city: "City 1",
+          number: 1232,
+          zip: "123456",
+        },
+      });
+    expect(customer2.status).toBe(200);
+
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+          {
+            id: uuid(),
+            name: productB.body.name,
+            productId: productB.body.id,
+            quantity: 1,
+            price: productB.body.price,
+          },
+        ],
+      });
+    expect(response.status).toBe(200);
+
+    const response2 = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer2.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 3,
+            price: productA.body.price,
+          },
+        ],
+      });
+    expect(response2.status).toBe(200);
+
+    const orderList = await request(app).get(`/order`).send();
+
+    expect(orderList.status).toBe(200);
+    expect(orderList.body.orders.length).toBe(2);
+
+    const order1 = orderList.body.orders[0];
+    expect(order1.customerId).toBe(customer.body.id);
+    expect(order1.items.length).toBe(2);
+    expect(order1.items[0].name).toBe(productA.body.name);
+    expect(order1.items[0].productId).toBe(productA.body.id);
+    expect(order1.items[0].price).toBe(productA.body.price);
+    expect(order1.items[0].quantity).toBe(2);
+    expect(order1.items[1].name).toBe(productB.body.name);
+    expect(order1.items[1].productId).toBe(productB.body.id);
+    expect(order1.items[1].price).toBe(productB.body.price);
+    expect(order1.items[1].quantity).toBe(1);
+
+    const order2 = orderList.body.orders[1];
+    expect(order2.customerId).toBe(customer2.body.id);
+    expect(order2.items.length).toBe(1);
+    expect(order2.items[0].name).toBe(productA.body.name);
+    expect(order2.items[0].productId).toBe(productA.body.id);
+    expect(order2.items[0].price).toBe(productA.body.price);
+    expect(order2.items[0].quantity).toBe(3);
+  });
+
+  it("should list all orders xml", async () => {
+    const customer2 = await request(app)
+      .post("/customer")
+      .send({
+        name: "Jane",
+        address: {
+          street: "Street 1",
+          city: "City 1",
+          number: 1232,
+          zip: "123456",
+        },
+      });
+    expect(customer2.status).toBe(200);
+
+    const response = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 2,
+            price: productA.body.price,
+          },
+          {
+            id: uuid(),
+            name: productB.body.name,
+            productId: productB.body.id,
+            quantity: 1,
+            price: productB.body.price,
+          },
+        ],
+      });
+    expect(response.status).toBe(200);
+
+    const response2 = await request(app)
+      .post("/order")
+      .send({
+        customerId: customer2.body.id,
+        items: [
+          {
+            id: uuid(),
+            name: productA.body.name,
+            productId: productA.body.id,
+            quantity: 3,
+            price: productA.body.price,
+          },
+        ],
+      });
+    expect(response2.status).toBe(200);
+
+    const order = await request(app)
+      .get(`/order`)
+      .set("Accept", "application/xml")
+      .send();
+
+    expect(order.status).toBe(200);
+    expect(order.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+    expect(order.text).toContain(`<orders>`);
+    expect(order.text).toContain(`<order>`);
+    expect(order.text).toContain(
+      `<customerId>${customer.body.id}</customerId>`
+    );
+    expect(order.text).toContain(`<items>`);
+    expect(order.text).toContain(`<item>`);
+    expect(order.text).toContain(`<name>${productA.body.name}</name>`);
+    expect(order.text).toContain(`<productId>${productA.body.id}</productId>`);
+    expect(order.text).toContain(`<quantity>2</quantity>`);
+    expect(order.text).toContain(`<price>${productA.body.price}</price>`);
+    expect(order.text).toContain(`<name>${productB.body.name}</name>`);
+    expect(order.text).toContain(`<productId>${productB.body.id}</productId>`);
+    expect(order.text).toContain(`<quantity>1</quantity>`);
+    expect(order.text).toContain(`<price>${productB.body.price}</price>`);
+    expect(order.text).toContain(
+      `<customerId>${customer2.body.id}</customerId>`
+    );
+    expect(order.text).toContain(`<name>${productA.body.name}</name>`);
+    expect(order.text).toContain(`<productId>${productA.body.id}</productId>`);
+    expect(order.text).toContain(`<quantity>2</quantity>`);
+    expect(order.text).toContain(`<price>${productA.body.price}</price>`);
+    expect(order.text).toContain(`<quantity>3</quantity>`);
+    expect(order.text).toContain(`</item>`);
+    expect(order.text).toContain(`</items>`);
+    expect(order.text).toContain(`</order>`);
+    expect(order.text).toContain(`</orders>`);
+  });
 });
