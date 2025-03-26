@@ -1,10 +1,7 @@
-import OrderItem from "../../../domain/checkout/entity/order_item";
 import OrderRepositoryInterface from "../../../domain/checkout/repository/order-repository.interface";
-import OrderService from "../../../domain/checkout/service/order.service";
-import CustomerRepositoryInterface from "../../../domain/customer/repository/customer-repository.interface";
 import { InputFindOrderDto, OutputFindOrderDto } from "./find.order.dto";
 
-export default class FindOrdertUseCase {
+export default class FindOrderUseCase {
   private orderRepository: OrderRepositoryInterface;
 
   constructor(orderRepository: OrderRepositoryInterface) {

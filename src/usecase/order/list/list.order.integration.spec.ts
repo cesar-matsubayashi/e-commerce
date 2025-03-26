@@ -13,7 +13,7 @@ import Product from "../../../domain/product/entity/product";
 import OrderRepository from "../../../infrastructure/order/repository/sequilize/order.repository";
 import ListOrderUseCase from "./list.order.usecase";
 
-describe("Unit test find order use case", () => {
+describe("Integration test find order use case", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {

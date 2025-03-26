@@ -4,7 +4,7 @@ import OrderService from "../../../domain/checkout/service/order.service";
 import CustomerRepositoryInterface from "../../../domain/customer/repository/customer-repository.interface";
 import { InputCreateOrderDto, OutputCreateOrderDto } from "./create.order.dto";
 
-export default class CreateOrdertUseCase {
+export default class CreateOrderUseCase {
   private orderRepository: OrderRepositoryInterface;
   private customerRepository: CustomerRepositoryInterface;
 

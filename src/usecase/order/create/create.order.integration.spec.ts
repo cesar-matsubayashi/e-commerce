@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import CreateOrdertUseCase from "./create.order.usecase";
+import CreateOrderUseCase from "./create.order.usecase";
 import { Sequelize } from "sequelize-typescript";
 import OrderModel from "../../../infrastructure/order/repository/sequilize/order.model";
 import OrderItemModel from "../../../infrastructure/order/repository/sequilize/order-item.model";
@@ -29,7 +29,7 @@ const customer = new Customer("123", "Customer 1");
 const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
 customer.changeAddress(address);
 
-describe("Unit test create order use case", () => {
+describe("Integration test create order use case", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -64,7 +64,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );
@@ -80,7 +80,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );
@@ -96,7 +96,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );
@@ -118,7 +118,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );
@@ -140,7 +140,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );
@@ -162,7 +162,7 @@ describe("Unit test create order use case", () => {
     const orderRepository = new OrderRepository();
     const customerRepository = new CustomerRepository();
 
-    const orderCreateUseCase = new CreateOrdertUseCase(
+    const orderCreateUseCase = new CreateOrderUseCase(
       orderRepository,
       customerRepository
     );

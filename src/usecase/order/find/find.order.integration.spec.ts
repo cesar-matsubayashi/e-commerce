@@ -2,7 +2,7 @@ import Customer from "../../../domain/customer/entity/customer";
 import Address from "../../../domain/customer/value-object/address";
 import OrderService from "../../../domain/checkout/service/order.service";
 import OrderItem from "../../../domain/checkout/entity/order_item";
-import FindOrdertUseCase from "./find.order.usecase";
+import FindOrderUseCase from "./find.order.usecase";
 import OrderRepository from "../../../infrastructure/order/repository/sequilize/order.repository";
 import { Sequelize } from "sequelize-typescript";
 import CustomerModel from "../../../infrastructure/customer/repository/sequelize/customer.model";
@@ -13,7 +13,7 @@ import CustomerRepository from "../../../infrastructure/customer/repository/sequ
 import ProductRepository from "../../../infrastructure/product/repository/sequelize/product.repository";
 import Product from "../../../domain/product/entity/product";
 
-describe("Unit test find order use case", () => {
+describe("Integration test find order use case", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -57,7 +57,7 @@ describe("Unit test find order use case", () => {
     );
 
     const orderRepository = new OrderRepository();
-    const findOrderUseCase = new FindOrdertUseCase(orderRepository);
+    const findOrderUseCase = new FindOrderUseCase(orderRepository);
 
     const order = OrderService.placeOrder(customer, [item]);
     await orderRepository.create(order);
@@ -82,7 +82,7 @@ describe("Unit test find order use case", () => {
 
   it("should not find a order", async () => {
     const orderRepository = new OrderRepository();
-    const findOrderUseCase = new FindOrdertUseCase(orderRepository);
+    const findOrderUseCase = new FindOrderUseCase(orderRepository);
 
     expect(() => {
       return findOrderUseCase.execute({ id: "1" });
