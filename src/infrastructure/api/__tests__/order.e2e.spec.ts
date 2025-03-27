@@ -251,14 +251,28 @@ describe("E2E test for order", () => {
     const order1 = orderList.body.orders[0];
     expect(order1.customerId).toBe(customer.body.id);
     expect(order1.items.length).toBe(2);
-    expect(order1.items[0].name).toBe(productA.body.name);
-    expect(order1.items[0].productId).toBe(productA.body.id);
-    expect(order1.items[0].price).toBe(productA.body.price);
-    expect(order1.items[0].quantity).toBe(2);
-    expect(order1.items[1].name).toBe(productB.body.name);
-    expect(order1.items[1].productId).toBe(productB.body.id);
-    expect(order1.items[1].price).toBe(productB.body.price);
-    expect(order1.items[1].quantity).toBe(1);
+
+    expect(order1.items).toEqual(
+      expect.arrayContaining([
+        {
+          id: expect.any(String),
+          name: productA.body.name,
+          productId: productA.body.id,
+          quantity: 2,
+          price: productA.body.price,
+          total: productA.body.price * 2,
+        },
+        {
+          id: expect.any(String),
+          name: productB.body.name,
+          productId: productB.body.id,
+          quantity: 1,
+          price: productB.body.price,
+          total: productB.body.price * 1,
+        },
+        ,
+      ])
+    );
 
     const order2 = orderList.body.orders[1];
     expect(order2.customerId).toBe(customer2.body.id);
