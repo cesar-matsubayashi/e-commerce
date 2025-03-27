@@ -11,7 +11,7 @@ describe("E2E test for product", () => {
   });
 
   it("should create a product", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -23,7 +23,7 @@ describe("E2E test for product", () => {
   });
 
   it("should not create a product", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       name: "Product A",
     });
 
@@ -31,7 +31,7 @@ describe("E2E test for product", () => {
   });
 
   it("should find a product", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -39,7 +39,7 @@ describe("E2E test for product", () => {
     expect(response.status).toBe(200);
 
     const output = await request(app)
-      .get(`/product/${response.body.id}`)
+      .get(`/products/${response.body.id}`)
       .send();
 
     expect(output.status).toBe(200);
@@ -48,7 +48,7 @@ describe("E2E test for product", () => {
   });
 
   it("should find a product xml", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -56,7 +56,7 @@ describe("E2E test for product", () => {
     expect(response.status).toBe(200);
 
     const output = await request(app)
-      .get(`/product/${response.body.id}`)
+      .get(`/products/${response.body.id}`)
       .set("Accept", "application/xml")
       .send();
 
@@ -69,7 +69,7 @@ describe("E2E test for product", () => {
   });
 
   it("should list all products", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -77,7 +77,7 @@ describe("E2E test for product", () => {
 
     expect(response.status).toBe(200);
 
-    const response2 = await request(app).post("/product").send({
+    const response2 = await request(app).post("/products").send({
       type: "b",
       name: "Product B",
       price: 10,
@@ -85,7 +85,7 @@ describe("E2E test for product", () => {
 
     expect(response2.status).toBe(200);
 
-    const listResponse = await request(app).get("/product").send();
+    const listResponse = await request(app).get("/products").send();
 
     expect(listResponse.status).toBe(200);
     expect(listResponse.body.products.length).toBe(2);
@@ -100,14 +100,14 @@ describe("E2E test for product", () => {
   });
 
   it("should list all products xml", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
     });
     expect(response.status).toBe(200);
 
-    const response2 = await request(app).post("/product").send({
+    const response2 = await request(app).post("/products").send({
       type: "b",
       name: "Product B",
       price: 10,
@@ -115,7 +115,7 @@ describe("E2E test for product", () => {
     expect(response2.status).toBe(200);
 
     const listResponse = await request(app)
-      .get("/product")
+      .get("/products")
       .set("Accept", "application/xml")
       .send();
 
@@ -129,12 +129,12 @@ describe("E2E test for product", () => {
     expect(listResponse.text).toContain(`<price>10</price>`);
     expect(listResponse.text).toContain(`<name>Product B</name>`);
     expect(listResponse.text).toContain(`<price>20</price>`);
-    expect(listResponse.text).toContain(`</product>`);
+    expect(listResponse.text).toContain(`</products>`);
     expect(listResponse.text).toContain(`</products>`);
   });
 
   it("should update a product", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -148,14 +148,14 @@ describe("E2E test for product", () => {
       price: 15,
     };
 
-    const output = await request(app).put(`/product/${input.id}`).send(input);
+    const output = await request(app).put(`/products/${input.id}`).send(input);
 
     expect(output.status).toBe(200);
     expect(output.body).toEqual(input);
   });
 
   it("should update a product xml", async () => {
-    const response = await request(app).post("/product").send({
+    const response = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 10,
@@ -170,7 +170,7 @@ describe("E2E test for product", () => {
     };
 
     const output = await request(app)
-      .put(`/product/${input.id}`)
+      .put(`/products/${input.id}`)
       .set("Accept", "application/xml")
       .send(input);
 

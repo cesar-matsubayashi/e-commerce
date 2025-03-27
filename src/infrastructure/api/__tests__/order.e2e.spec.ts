@@ -12,7 +12,7 @@ describe("E2E test for order", () => {
     await sequelize.sync({ force: true });
 
     customer = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -24,7 +24,7 @@ describe("E2E test for order", () => {
       });
 
     customer2 = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "Jane",
         address: {
@@ -35,13 +35,13 @@ describe("E2E test for order", () => {
         },
       });
 
-    productA = await request(app).post("/product").send({
+    productA = await request(app).post("/products").send({
       type: "a",
       name: "Product A",
       price: 100,
     });
 
-    productB = await request(app).post("/product").send({
+    productB = await request(app).post("/products").send({
       type: "b",
       name: "Product B",
       price: 150,
@@ -54,7 +54,7 @@ describe("E2E test for order", () => {
 
   it("should create a order", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -90,7 +90,7 @@ describe("E2E test for order", () => {
 
   it("should not create an order", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: "123",
         items: [
@@ -116,7 +116,7 @@ describe("E2E test for order", () => {
 
   it("should find an order", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -138,7 +138,7 @@ describe("E2E test for order", () => {
       });
     expect(response.status).toBe(200);
 
-    const order = await request(app).get(`/order/${response.body.id}`).send();
+    const order = await request(app).get(`/orders/${response.body.id}`).send();
 
     expect(order.status).toBe(200);
     expect(order.body.customerId).toBe(customer.body.id);
@@ -155,7 +155,7 @@ describe("E2E test for order", () => {
 
   it("should find an order xml", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -178,7 +178,7 @@ describe("E2E test for order", () => {
     expect(response.status).toBe(200);
 
     const order = await request(app)
-      .get(`/order/${response.body.id}`)
+      .get(`/orders/${response.body.id}`)
       .set("Accept", "application/xml")
       .send();
 
@@ -205,7 +205,7 @@ describe("E2E test for order", () => {
 
   it("should list all orders", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -228,7 +228,7 @@ describe("E2E test for order", () => {
     expect(response.status).toBe(200);
 
     const response2 = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer2.body.id,
         items: [
@@ -243,7 +243,7 @@ describe("E2E test for order", () => {
       });
     expect(response2.status).toBe(200);
 
-    const orderList = await request(app).get(`/order`).send();
+    const orderList = await request(app).get(`/orders`).send();
 
     expect(orderList.status).toBe(200);
     expect(orderList.body.orders.length).toBe(2);
@@ -285,7 +285,7 @@ describe("E2E test for order", () => {
 
   it("should list all orders xml", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -308,7 +308,7 @@ describe("E2E test for order", () => {
     expect(response.status).toBe(200);
 
     const response2 = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer2.body.id,
         items: [
@@ -324,7 +324,7 @@ describe("E2E test for order", () => {
     expect(response2.status).toBe(200);
 
     const order = await request(app)
-      .get(`/order`)
+      .get(`/orders`)
       .set("Accept", "application/xml")
       .send();
 
@@ -361,7 +361,7 @@ describe("E2E test for order", () => {
 
   it("should update an order", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -390,7 +390,7 @@ describe("E2E test for order", () => {
     };
 
     const output = await request(app)
-      .put(`/order/${response.body.id}`)
+      .put(`/orders/${response.body.id}`)
       .send(input);
 
     expect(output.status).toBe(200);
@@ -399,7 +399,7 @@ describe("E2E test for order", () => {
 
   it("should update an order xml", async () => {
     const response = await request(app)
-      .post("/order")
+      .post("/orders")
       .send({
         customerId: customer.body.id,
         items: [
@@ -428,7 +428,7 @@ describe("E2E test for order", () => {
     };
 
     const output = await request(app)
-      .put(`/order/${response.body.id}`)
+      .put(`/orders/${response.body.id}`)
       .set("Accept", "application/xml")
       .send(input);
 

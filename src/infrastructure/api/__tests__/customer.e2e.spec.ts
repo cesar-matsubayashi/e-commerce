@@ -12,7 +12,7 @@ describe("E2E test for customer", () => {
 
   it("should create a customer", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -32,7 +32,7 @@ describe("E2E test for customer", () => {
   });
 
   it("should not create a customer", async () => {
-    const response = await request(app).post("/customer").send({
+    const response = await request(app).post("/customers").send({
       name: "John",
     });
 
@@ -41,7 +41,7 @@ describe("E2E test for customer", () => {
 
   it("should find a customer", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -55,7 +55,7 @@ describe("E2E test for customer", () => {
     expect(response.status).toBe(200);
 
     const customer = await request(app)
-      .get(`/customer/${response.body.id}`)
+      .get(`/customers/${response.body.id}`)
       .send();
 
     expect(customer.status).toBe(200);
@@ -65,7 +65,7 @@ describe("E2E test for customer", () => {
 
   it("should find a customer xml", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -79,7 +79,7 @@ describe("E2E test for customer", () => {
     expect(response.status).toBe(200);
 
     const customer = await request(app)
-      .get(`/customer/${response.body.id}`)
+      .get(`/customers/${response.body.id}`)
       .set("Accept", "application/xml")
       .send();
 
@@ -98,7 +98,7 @@ describe("E2E test for customer", () => {
 
   it("should list all customers", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -112,7 +112,7 @@ describe("E2E test for customer", () => {
     expect(response.status).toBe(200);
 
     const response2 = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "Jane",
         address: {
@@ -125,7 +125,7 @@ describe("E2E test for customer", () => {
 
     expect(response2.status).toBe(200);
 
-    const listResponse = await request(app).get("/customer").send();
+    const listResponse = await request(app).get("/customers").send();
 
     expect(listResponse.status).toBe(200);
     expect(listResponse.body.customers.length).toBe(2);
@@ -141,7 +141,7 @@ describe("E2E test for customer", () => {
 
   it("should list all customers xml", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -154,7 +154,7 @@ describe("E2E test for customer", () => {
     expect(response.status).toBe(200);
 
     const response2 = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "Jane",
         address: {
@@ -167,7 +167,7 @@ describe("E2E test for customer", () => {
     expect(response2.status).toBe(200);
 
     const listResponseXML = await request(app)
-      .get("/customer")
+      .get("/customers")
       .set("Accept", "application/xml")
       .send();
 
@@ -194,7 +194,7 @@ describe("E2E test for customer", () => {
 
   it("should update a customer", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -217,7 +217,7 @@ describe("E2E test for customer", () => {
       },
     };
     const output = await request(app)
-      .put(`/customer/${response.body.id}`)
+      .put(`/customers/${response.body.id}`)
       .send(input);
 
     const testInput = { ...input, rewardPoints: 0 };
@@ -228,7 +228,7 @@ describe("E2E test for customer", () => {
 
   it("should update a customer xml", async () => {
     const response = await request(app)
-      .post("/customer")
+      .post("/customers")
       .send({
         name: "John",
         address: {
@@ -251,7 +251,7 @@ describe("E2E test for customer", () => {
       },
     };
     const output = await request(app)
-      .put(`/customer/${response.body.id}`)
+      .put(`/customers/${response.body.id}`)
       .set("Accept", "application/xml")
       .send(input);
 

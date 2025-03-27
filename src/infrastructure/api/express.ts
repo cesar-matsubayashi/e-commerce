@@ -11,9 +11,9 @@ import OrderItemModel from "../order/repository/sequilize/order-item.model";
 export const app: Express = express();
 app.use(express.json());
 
-app.use("/customer", customerRoute);
-app.use("/product", productRoute);
-app.use("/order", orderRoute);
+app.use("/customers", customerRoute);
+app.use("/products", productRoute);
+app.use("/orders", orderRoute);
 
 export let sequelize: Sequelize;
 
