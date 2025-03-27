@@ -20,9 +20,9 @@ clean-architecture/
 ├── src
 │   ├── domain               # Core domain logic following DDD principles
 │   │   ├── @shared          # Shared entities, events, notifications, repositories, and validators
-│   │   ├── checkout         # Order-related logic (entities, factories, services, and repositories)
-│   │   ├── customer         # Customer domain logic (entities, factories, and validators)
-│   │   └── product          # Product domain logic (entities, factories, services and validators)
+│   │   ├── checkout         # Order-related logic (entities, factories, repositories, services and validators)
+│   │   ├── customer         # Customer domain logic (entities, events, factories, repositories, validators and objects)
+│   │   └── product          # Product domain logic (entities, events, factories, repositories, services and validators)
 │   ├── infrastructure       # External implementations like API routes and Sequelize repositories
 │   │   ├── api              # Express routes, presenters, and server setup
 │   │   ├── customer         # Customer repository implementation with Sequelize
@@ -30,7 +30,8 @@ clean-architecture/
 │   │   └── product          # Product repository implementation with Sequelize
 │   └── usecase              # Application use cases for customer and product management
 │       ├── customer         # Create, Find, List, and Update customer use cases
-│       └── product          # Create, Find, List, and Update product use cases
+│       ├── order            # Create, Find, List, and Update order use cases
+|       └── product          # Create, Find, List, and Update product use cases
 ├── jest.config.ts           # Jest configuration
 ├── package.json             # Project dependencies and scripts
 ├── tsconfig.json            # TypeScript configuration
@@ -67,18 +68,26 @@ clean-architecture/
 
 ## Endpoints
 
-- **Customers**
+- **Customer**
 
   - `POST /customers` - Create a new customer
   - `GET /customers/:id` - Get a customer by ID
   - `GET /customers` - List all customers
   - `PUT /customers/:id` - Update customer information
 
-- **Products**
+- **Product**
+
   - `POST /products` - Create a new product
   - `GET /products/:id` - Get a product by ID
   - `GET /products` - List all products
   - `PUT /products/:id` - Update product information
+
+- **Order**
+
+  - `POST /orders` - Create a new order
+  - `GET /orders/:id` - Get a order by ID
+  - `GET /orders` - List all orders
+  - `PUT /orders/:id` - Update order information
 
 ## Learning Outcomes
 
