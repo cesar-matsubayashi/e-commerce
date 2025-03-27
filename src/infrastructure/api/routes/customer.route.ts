@@ -5,11 +5,15 @@ import ListCustomerUseCase from "../../../usecase/customer/list/list.customer.us
 import CustomerPresenter from "../presenters/customer.presenter";
 import FindCustomerUseCase from "../../../usecase/customer/find/find.customer.usecase";
 import UpdateCustomerUseCase from "../../../usecase/customer/update/update.customer.usecase";
+import EventDispatcher from "../../../domain/@shared/event/event-dispatcher";
 
 export const customerRoute = express.Router();
 
 customerRoute.post("/", async (req: Request, res: Response) => {
-  const usecase = new CreateCustomerUseCase(new CustomerRepository());
+  const usecase = new CreateCustomerUseCase(
+    new CustomerRepository(),
+    new EventDispatcher()
+  );
 
   try {
     const customerDto = {

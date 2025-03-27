@@ -1,5 +1,6 @@
 import { number } from "yup";
 import CreateCustomerUseCase from "./create.customer.usecase";
+import EventDispatcher from "../../../domain/@shared/event/event-dispatcher";
 
 const input = {
   name: "John",
@@ -23,7 +24,11 @@ const MockRepository = () => {
 describe("Unit test create customer use case", () => {
   it("should create a customer", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+    const eventDispatcher = new EventDispatcher();
+    const customerCreateUseCase = new CreateCustomerUseCase(
+      customerRepository,
+      eventDispatcher
+    );
 
     const output = await customerCreateUseCase.execute(input);
 
@@ -42,7 +47,11 @@ describe("Unit test create customer use case", () => {
 
   it("should throw an error when name is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+    const eventDispatcher = new EventDispatcher();
+    const customerCreateUseCase = new CreateCustomerUseCase(
+      customerRepository,
+      eventDispatcher
+    );
 
     const testInput = { ...input, name: "" };
 
@@ -53,7 +62,11 @@ describe("Unit test create customer use case", () => {
 
   it("should throw an error when street is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+    const eventDispatcher = new EventDispatcher();
+    const customerCreateUseCase = new CreateCustomerUseCase(
+      customerRepository,
+      eventDispatcher
+    );
 
     const testInput = {
       ...input,
@@ -67,7 +80,11 @@ describe("Unit test create customer use case", () => {
 
   it("should throw an error when number is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+    const eventDispatcher = new EventDispatcher();
+    const customerCreateUseCase = new CreateCustomerUseCase(
+      customerRepository,
+      eventDispatcher
+    );
 
     const testInput = {
       ...input,
@@ -81,7 +98,11 @@ describe("Unit test create customer use case", () => {
 
   it("should throw an error when street and zip is missing", async () => {
     const customerRepository = MockRepository();
-    const customerCreateUseCase = new CreateCustomerUseCase(customerRepository);
+    const eventDispatcher = new EventDispatcher();
+    const customerCreateUseCase = new CreateCustomerUseCase(
+      customerRepository,
+      eventDispatcher
+    );
 
     const testInput = {
       ...input,

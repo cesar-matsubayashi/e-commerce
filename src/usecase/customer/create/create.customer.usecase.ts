@@ -1,3 +1,5 @@
+import EventDispatcher from "../../../domain/@shared/event/event-dispatcher";
+import CustomerCreatedEvent from "../../../domain/customer/event/customer-created.event";
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import CustomerRepositoryInterface from "../../../domain/customer/repository/customer-repository.interface";
 import Address from "../../../domain/customer/value-object/address";
@@ -8,9 +10,14 @@ import {
 
 export default class CreateCustomerUseCase {
   private customerRepository: CustomerRepositoryInterface;
+  private eventDispatcher: EventDispatcher;
 
-  constructor(customerRepository: CustomerRepositoryInterface) {
+  constructor(
+    customerRepository: CustomerRepositoryInterface,
+    eventDispatcher: EventDispatcher
+  ) {
     this.customerRepository = customerRepository;
+    this.eventDispatcher = eventDispatcher;
   }
 
   async execute(
@@ -27,6 +34,9 @@ export default class CreateCustomerUseCase {
     );
 
     await this.customerRepository.create(customer);
+
+    const customerCreatedEvent = new CustomerCreatedEvent({});
+    this.eventDispatcher.notify(customerCreatedEvent);
 
     return {
       id: customer.id,
