@@ -1,3 +1,4 @@
+import EventDispatcher from "../../../domain/@shared/event/event-dispatcher";
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
 import UpdateCustomerUseCase from "./update.customer.usecase";
@@ -33,7 +34,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
     const testInput = { ...input, rewardPoints: 0 };
@@ -47,7 +51,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
     const testInput = { ...input, name: "" };
@@ -61,7 +68,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
 
@@ -79,7 +89,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
 
@@ -97,7 +110,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
 
@@ -115,7 +131,10 @@ describe("Unit test for customer update use case", () => {
     const customer = createCustomer();
     const customerRepository = MockRepository();
     customerRepository.find.mockReturnValue(Promise.resolve(customer));
-    const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
+    const customerUpdateUseCase = new UpdateCustomerUseCase(
+      customerRepository,
+      new EventDispatcher()
+    );
 
     input.id = customer.id;
 

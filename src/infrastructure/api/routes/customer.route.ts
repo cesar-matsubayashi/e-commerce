@@ -63,7 +63,10 @@ customerRoute.get("/:id", async (req: Request, res: Response) => {
 });
 
 customerRoute.put("/:id", async (req: Request, res: Response) => {
-  const usecase = new UpdateCustomerUseCase(new CustomerRepository());
+  const usecase = new UpdateCustomerUseCase(
+    new CustomerRepository(),
+    new EventDispatcher()
+  );
 
   try {
     const customerDto = {

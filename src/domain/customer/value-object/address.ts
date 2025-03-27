@@ -45,4 +45,18 @@ export default class Address extends Entity {
   toString() {
     return `${this._street}, ${this._number}, ${this._zip} ${this._city}`;
   }
+
+  equals(address: {
+    street: string;
+    number: number;
+    zip: string;
+    city: string;
+  }): boolean {
+    return (
+      this._street === address.street &&
+      this._number === address.number &&
+      this._zip === address.zip &&
+      this._city === address.city
+    );
+  }
 }
