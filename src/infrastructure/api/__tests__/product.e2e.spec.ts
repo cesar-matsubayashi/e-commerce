@@ -60,7 +60,6 @@ describe("E2E test for product", () => {
       .set("Accept", "application/xml")
       .send();
 
-    console.log(output.text);
     expect(output.status).toBe(200);
     expect(output.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
     expect(output.text).toContain(`<product>`);
