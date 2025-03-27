@@ -36,7 +36,7 @@ describe("Unit test for customer update use case", () => {
     const customerUpdateUseCase = new UpdateCustomerUseCase(customerRepository);
 
     input.id = customer.id;
-    const testInput = { ...input, rewardPoints: "" };
+    const testInput = { ...input, rewardPoints: 0 };
 
     const output = await customerUpdateUseCase.execute(input);
 
